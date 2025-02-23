@@ -24,7 +24,6 @@ namespace PopulationGame.Repositories
                     VALUES (@UserId, @StartTime, @EndTime, @Streak, @Guesses, @Difficulty);
                     SELECT CAST(SCOPE_IDENTITY() as int);";
 
-                // Kör INSERT-satsen och hämta tillbaka det genererade log-id:t
                 int id = connection.Query<int>(sql, log).Single();
                 log.LogId = id;
             }
@@ -34,7 +33,10 @@ namespace PopulationGame.Repositories
         {
             using (IDbConnection connection = _context.CreateConnection())
             {
-                var sql = "SELECT * FROM UserGameLog WHERE UserId = @UserId ORDER BY StartTime DESC";
+                var sql = @"SELECT UserId, StartTime, EndTime, Streak, Guesses, Difficulty 
+                            FROM UserGameLog 
+                            WHERE UserId = @UserId ORDER BY StartTime DESC";
+
                 return connection.Query<UserGameLog>(sql, new { UserId = userId }).ToList();
             }
         }

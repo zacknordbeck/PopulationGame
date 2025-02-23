@@ -7,6 +7,5 @@ public interface ICountryRepository
 {
     IEnumerable<Country> GetAllCountries();
     Country GetRandomCountry();
-    // Vid behov: Lägg till metoder för att hämta länder baserat på svårighetsgrad
 }
 

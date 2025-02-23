@@ -8,7 +8,7 @@ using PopulationGame.Repositories;
 
 namespace PopulationGame;
 
-public class GameRunner
+public class GameRunner //TODO: Bugg vid sparande av streak vid första spel av ny användare
 {
     private readonly IDbConnectionFactory _connectionFactory;
     private readonly IUserRepository _userRepository;
@@ -32,7 +32,6 @@ public class GameRunner
 
     public void Run()
     {
-        // Logga in användaren först
         LoginUser();
         if (CurrentUser == null)
         {
@@ -40,7 +39,6 @@ public class GameRunner
             return;
         }
 
-        // Visa huvudmenyn
         MainMenu();
     }
 
@@ -50,7 +48,7 @@ public class GameRunner
         while (!exit)
         {
             Console.Clear();
-            Console.WriteLine($"Välkommen {CurrentUser.Username}!");
+            Console.WriteLine($"Välkommen {CurrentUser.Username}!\n");
             Console.WriteLine("Välj ett alternativ:");
             Console.WriteLine("1. Starta nytt spel");
             Console.WriteLine("2. Visa spelhistorik");
@@ -105,7 +103,7 @@ public class GameRunner
             );
             // Visa instruktioner utanför boxen
             Console.SetCursorPosition(0, ConsoleUI.BoxHeight + 1);
-            Console.WriteLine("Tryck vänster eller höger pil för att gissa, ESC för att avsluta spelet...");
+            Console.WriteLine("Tryck vänster eller höger pil för att gissa landet med högst befolkning, ESC för att avsluta spelet...");
 
             // 2. Vänta på användarens inmatning
             var keyInfo = Console.ReadKey(intercept: true);
@@ -203,6 +201,7 @@ public class GameRunner
             user = new User { Username = username };
             _userRepository.CreateUser(user);
             Console.WriteLine($"Användare '{user.Username}' skapad med id: {user.UserId}");
+            Thread.Sleep(2000);
         }
         else
         {
@@ -243,7 +242,8 @@ public class GameRunner
                 ? (double)left.Population / right.Population
                 : (double)right.Population / left.Population;
 
-            if (difficulty == "Lätt" && ratio >= 1.5)
+            //ändra ratio för att justera populationsratio mellan länderna och därmed påverka svårighetsgraden
+            if (difficulty == "Lätt" && ratio >= 1.5) 
                 return (left, right);
             if (difficulty == "Svårt" && ratio < 1.5)
                 return (left, right);
@@ -261,6 +261,7 @@ public class GameRunner
                 ? (double)referenceCountry.Population / candidate.Population
                 : (double)candidate.Population / referenceCountry.Population;
 
+            //ändra ratio för att justera populationsratio mellan länderna och därmed påverka svårighetsgraden
             if (difficulty == "Lätt" && ratio >= 1.5)
                 return candidate;
             if (difficulty == "Svårt" && ratio < 1.5)
@@ -294,7 +295,7 @@ public class GameRunner
             Console.WriteLine("-------------------------------------------------------");
         }
 
-        Console.WriteLine("Tryck på en tangent för att återgå till menyn...");
+        Console.WriteLine($"\nTryck på en tangent för att återgå till menyn...");
         Console.ReadKey(true);
     }
 

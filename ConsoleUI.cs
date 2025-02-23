@@ -6,7 +6,7 @@ namespace PopulationGame
     public static class ConsoleUI
     {
         public static int BoxWidth = 70;
-        public static int BoxHeight = 12; // Ökar höjden lite så att vi får plats med extra information
+        public static int BoxHeight = 12; 
         public static int AnimationDelay = 50; // Fördröjning i ms per bokstav
 
         /// <summary>

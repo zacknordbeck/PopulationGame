@@ -20,7 +20,7 @@ namespace PopulationGame.Repositories
         {
             using (IDbConnection connection = _context.CreateConnection())
             {
-                var sql = "SELECT * FROM Countries"; //TODO: Skriv ut kolumnnamn
+                var sql = "SELECT CountryId, Name, Population FROM Countries";
                 return connection.Query<Country>(sql).ToList();
             }
         }
@@ -29,8 +29,8 @@ namespace PopulationGame.Repositories
         {
             using (IDbConnection connection = _context.CreateConnection())
             {
-                // Använder NEWID() för att slumpmässigt hämta ett land
-                var sql = "SELECT TOP 1 * FROM Countries ORDER BY NEWID()"; //TODO: Skriv ut kolumnnamn
+                // Använder NEWID() för att slumpmässigt hämta ett land, NEWID sätter ett slumpmässigt ID på raderna och vi hämtar TOP 1.
+                var sql = "SELECT TOP 1 CountryId, Name, Population FROM Countries ORDER BY NEWID()";
                 return connection.QueryFirstOrDefault<Country>(sql);
             }
         }

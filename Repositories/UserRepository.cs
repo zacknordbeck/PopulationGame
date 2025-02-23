@@ -18,7 +18,10 @@ namespace PopulationGame.Repositories
         {
             using (IDbConnection connection = _context.CreateConnection())
             {
-                var sql = "SELECT * FROM Users WHERE Username = @Username";
+                var sql = @"SELECT UserId, Username 
+                            FROM Users 
+                            WHERE Username = @Username";
+
                 return connection.QueryFirstOrDefault<User>(sql, new { Username = username });
             }
         }
@@ -30,7 +33,7 @@ namespace PopulationGame.Repositories
                 var sql = @"INSERT INTO Users (Username) 
                             VALUES (@Username); 
                             SELECT CAST(SCOPE_IDENTITY() as int);";
-                // Kör INSERT-satsen och hämta tillbaka det genererade id:t
+
                 int id = connection.Query<int>(sql, new { Username = user.Username }).Single();
                 user.UserId = id;
             }
